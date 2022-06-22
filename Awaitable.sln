@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Awaitable", "Awaitable\Awaitable.csproj", "{86C5A4C2-CBAD-44C4-B893-75D553DC3855}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Awaitable.Tests", "Awaitable.Tests\Awaitable.Tests.csproj", "{2B8E0643-10AC-4019-B648-9D19F1B3F316}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{86C5A4C2-CBAD-44C4-B893-75D553DC3855}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{86C5A4C2-CBAD-44C4-B893-75D553DC3855}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{86C5A4C2-CBAD-44C4-B893-75D553DC3855}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{86C5A4C2-CBAD-44C4-B893-75D553DC3855}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2B8E0643-10AC-4019-B648-9D19F1B3F316}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2B8E0643-10AC-4019-B648-9D19F1B3F316}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2B8E0643-10AC-4019-B648-9D19F1B3F316}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2B8E0643-10AC-4019-B648-9D19F1B3F316}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
