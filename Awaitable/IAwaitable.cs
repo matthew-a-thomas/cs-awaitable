@@ -8,7 +8,7 @@ namespace Awaitable;
 /// </summary>
 /// <remarks>
 /// <para>
-/// Do not implement this interface implicitly.
+/// Do not implement this interface explicitly.
 /// </para>
 /// </remarks>
 public interface IAwaitable<out TAwaiter>
@@ -25,7 +25,7 @@ where TAwaiter : IAwaiter
 /// </summary>
 /// <remarks>
 /// <para>
-/// Do not implement this interface implicitly.
+/// Do not implement this interface explicitly.
 /// </para>
 /// </remarks>
 public interface IAwaitable<TResult, out TAwaiter>

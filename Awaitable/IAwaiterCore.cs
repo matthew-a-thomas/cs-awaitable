@@ -9,7 +9,7 @@ using System.Runtime.CompilerServices;
 /// </summary>
 /// <remarks>
 /// <para>
-/// Do not implement this interface implicitly.
+/// Do not implement this interface explicitly.
 /// </para>
 /// </remarks>
 public interface IAwaiterCore : ICriticalNotifyCompletion

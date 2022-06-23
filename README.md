@@ -8,9 +8,123 @@ Interfaces for custom [awaitable expressions](https://docs.microsoft.com/en-us/d
 
 # Examples
 
-## Synchronously return 42
+A few examples to get your creative juices flowing:
+
+## Awaitable `TimeSpan`
+
+Turn any `TimeSpan` into a timer that returns itself after its amount of time
+passes:
 
 ```csharp
+using System;
+using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
+
+readonly record struct TimeSpanAwaiter(TaskAwaiter TaskAwaiter, TimeSpan TimeSpan) : IAwaiter<TimeSpan>
+{
+    public TimeSpan GetResult()
+    {
+        TaskAwaiter.GetResult();
+        return TimeSpan;
+    }
+
+    public void OnCompleted(Action continuation) => TaskAwaiter.OnCompleted(continuation);
+
+    public void UnsafeOnCompleted(Action continuation) => TaskAwaiter.UnsafeOnCompleted(continuation);
+
+    public bool IsCompleted => TaskAwaiter.IsCompleted;
+}
+
+static class TimeSpanExtensions
+{
+    public static TimeSpanAwaiter GetAwaiter(this TimeSpan timeSpan) => new(Task.Delay(timeSpan).GetAwaiter(), timeSpan);
+}
+
+[Fact]
+public async Task ShouldYieldToSynchronizationContext()
+{
+    var timeSpan = TimeSpan.FromSeconds(1);
+    var result = await timeSpan; // Takes 1 second to evaluate
+    Assert.Equal(timeSpan, result);
+}
+```
+
+A simpler variation of this can be found here:<br/>
+https://devblogs.microsoft.com/pfxteam/await-anything/#:~:text=1%2Dline%20GetAwaiter%20method%20for%20TimeSpan
+
+## Awaitable `CancellationToken`
+
+Await the cancellation of any `CancellationToken`. A slight tweak will make this
+work for any `WaitHandle`:
+
+```csharp
+using System;
+using System.Threading;
+
+readonly record struct WaitHandleAwaiter(WaitHandle? Handle) : IAwaiter
+{
+    static readonly ContextCallback InvokeActionContextCallback = state => ((Action)state!)();
+    static readonly WaitOrTimerCallback InvokeActionWaitOrTimerCallback = (state, _) => ((Action)state!)();
+
+    public bool IsCompleted => Handle?.WaitOne(0) ?? false;
+
+    public void GetResult()
+    {}
+
+    public void OnCompleted(Action continuation)
+    {
+        var context = ExecutionContext.Capture();
+        if (context is not null)
+        {
+            void WrappedContinuation() => ExecutionContext.Run(context, InvokeActionContextCallback, continuation);
+            UnsafeOnCompleted(WrappedContinuation);
+        }
+        else
+        {
+            UnsafeOnCompleted(continuation);
+        }
+    }
+
+    public void UnsafeOnCompleted(Action continuation)
+    {
+        if (Handle is null)
+            return; // Missing handle is treated the same as an infinite wait. The continuation will never execute
+        ThreadPool.RegisterWaitForSingleObject(
+            Handle,
+            InvokeActionWaitOrTimerCallback,
+            continuation,
+            Timeout.Infinite,
+            true
+        );
+    }
+}
+
+static class CancellationTokenExtensions
+{
+    public static WaitHandleAwaiter GetAwaiter(this CancellationToken cancellationToken) =>
+        cancellationToken.CanBeCanceled
+            ? new WaitHandleAwaiter(cancellationToken.WaitHandle)
+            : default;
+}
+
+[Fact]
+public async Task ShouldAwaitCancellation()
+{
+    var cts = new CancellationTokenSource(TimeSpan.FromSeconds(1));
+    var token = cts.Token;
+    await token; // Takes 1 second to evaluate
+}
+```
+
+## Synchronously return 42
+
+Jump through a lot of hoops to synchronously return a constant from an awaitable
+expression:
+
+```csharp
+using System;
+using System.Threading;
+
 sealed class Awaiter<T> : IAwaiter<T>
 {
     static readonly ContextCallback ExecuteContinuation = state => ((Action)state!)();
@@ -72,4 +186,5 @@ public async Task ShouldBeFortyTwo()
 |Version|Notes|
 |-|-|
 |0.1.0|Initial release|
-|0.1.1|Strongly sign assembly|
+|0.1.1|Strongly name assembly|
+|0.1.2|Improve documentation|

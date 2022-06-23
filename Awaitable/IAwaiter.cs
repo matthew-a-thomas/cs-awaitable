@@ -7,7 +7,7 @@ namespace Awaitable;
 /// </summary>
 /// <remarks>
 /// <para>
-/// Do not implement this interface implicitly.
+/// Do not implement this interface explicitly.
 /// </para>
 /// </remarks>
 public interface IAwaiter : IAwaiterCore
@@ -23,7 +23,7 @@ public interface IAwaiter : IAwaiterCore
 /// </summary>
 /// <remarks>
 /// <para>
-/// Do not implement this interface implicitly.
+/// Do not implement this interface explicitly.
 /// </para>
 /// </remarks>
 public interface IAwaiter<out T> : IAwaiterCore
