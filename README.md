@@ -66,3 +66,10 @@ public async Task ShouldBeFortyTwo()
     Assert.Equal(42, await awaitableFortyTwo);
 }
 ```
+
+# Release history
+
+|Version|Notes|
+|-|-|
+|0.1.0|Initial release|
+|0.1.1|Strongly sign assembly|

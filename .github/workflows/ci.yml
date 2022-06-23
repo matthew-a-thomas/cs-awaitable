@@ -13,6 +13,11 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+    - name: Decrypt keypair.snk
+      env:
+        KEYPAIR_GPG_PASSPHRASE: ${{ secrets.KEYPAIR_GPG_PASSPHRASE }}
+      run: |
+        gpg --quiet --batch --yes --decrypt --passphrase="$KEYPAIR_GPG_PASSPHRASE" --output keypair.snk keypair.snk.gpg
     - name: Setup .NET
       uses: actions/setup-dotnet@v2
       with:
