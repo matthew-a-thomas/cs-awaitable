@@ -7,7 +7,7 @@
         <ImplicitUsings>disable</ImplicitUsings>
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
         <Description>Interfaces for custom awaitable expressions</Description>
-        <Version>0.3.0</Version>
+        <Version>0.3.1</Version>
         <Authors>Matthew A. Thomas</Authors>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <PackageProjectUrl>https://github.com/matthew-a-thomas/cs-awaitable</PackageProjectUrl>
