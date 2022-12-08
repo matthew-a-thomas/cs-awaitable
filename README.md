@@ -185,6 +185,7 @@ public async Task ShouldBeFortyTwo()
 
 |Version|Notes|
 |-|-|
+|0.3.0|Target more frameworks to reduce package dependency graph|
 |0.2.0|Fix .csproj and align language features with target framework|
 |0.1.2|Improve documentation|
 |0.1.1|Strongly name assembly|
